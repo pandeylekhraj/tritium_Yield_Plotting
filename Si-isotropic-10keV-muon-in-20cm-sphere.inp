@@ -1,0 +1,400 @@
+* ..+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8
+TITLE
+Neutron propagation on shallow depth
+GLOBAL                                          1.        1.
+DEFAULTS                                                              PRECISIO
+* ..+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8
+BEAM          -1E-05              10000.                              MUON-
+BEAMPOS                 20.001                                        SPHE-VOL
+BEAMPOS          0.0       0.0       70.                              NEGATIVE
+*SPECSOUR                                                              GCR-SPEC
+*BEAMPOS                                                               SPHE-VOL
+* Only-activate--if-reading-spectrum
+*SOURCE           40.
+#if 0
+OPEN             40.                                                  OLD
+2E7-muonPNL_d.dat
+#endif
+IONTRANS    HEAVYION
+EMFRAY            4.    VACCUM  @LASTREG
+MUPHOTON          1.                        VACUUM  @LASTMAT        1.
+PHOTONUC       1111.                      BLCKHOLE  @LASTMAT
+PHYSICS        1000.     1000.     1000.     1000.     1000.     1000.PEATHRES
+*         ---------|---------|---------|---------|---------|---------|
+PHYSICS           1.        1.        1.                              COALESCE
+PHYSICS           3.                                                  EVAPORAT
+PHYSICS           1.       0.1      0.15        2.        2.        1.IONSPLIT
+*         ---------|---------|---------|---------|---------|---------|
+RADDECAY          2.
+PAIRBREM          3.    0.0001   0.00010    VACUUM  @LASTMAT        1.
+USERDUMP        100.                            1.                    allinfo
+* score in each region energy deposition and stars produced by primaries
+*SCORE         ENERGY  ALL-PART
+USERWEIG                                                  1.
+GEOBEGIN                                                              COMBNAME
+    0    0                  Crust_with_three _storey.
+RPP BlckHol    -12000. 12000. -12000. 12000. -1500. 1500.
+RPP Vaccum     -10000. 10000. -10000. 10000. -1200. 1200.
+RPP Level_1    -10000. 10000. -10000. 10000. -1175. 0.0
+RPP Level_2    -150. 150. -750. 750. -700. -600.
+RPP Level_3    -150. 150. -750. 750. -1000. -700.
+#if 0
+RCC Level_4    0.0 0.0 50. 0.0 0.0 25. 40.
+#endif
+SPH Level_4    0.0 0.0 70. 20.
+#if 0
+RCC Level_5    0.0 0.0 75. 0.0 0.0 25. 40.
+#endif
+#if 0
+RCC Level_6    -7000. -7000. 50. 0.0 0.0 100. 100.
+#endif
+#if 0
+RPP Level_8    -1000. 1000. -1000. 1000. -3000. -2000.
+#endif
+#if 0
+RPP Level_7    -1000. 1000. -1000. 1000. -2000. -1200.
+#endif
+#if 0
+RPP Level_9    -1000. 1000. -1000. 1000. -4000. -3000.
+#endif
+#if 0
+RPP Level_10   -1000. 1000. -1000. 1000. -5000. -4000.
+#endif
+#if 0
+RPP Level_11   -1000. 1000. -1000. 1000. -6000. -5000.
+#endif
+END
+* black hole
+blackhol     5 +BlckHol -Vaccum
+VACCUM       5 +Vaccum -Level_1-Level_4
+* Rock1
+Rock_Ov      5 Level_1-Level_2-Level_3
+* Rock2
+Rock_to      5 Level_2
+* Rock5
+Gedet        5 Level_4
+#if 0
+Gedet2       5 Level_4
+#endif
+#if 0
+Cudet        5 Level_6
+#endif
+Tunair       5 Level_3
+END
+GEOEND
+*COMPOUND                                                              AIR
+MATERIAL
+MATERIAL         19.   39.0983     0.862       26.                    POTASSIU
+* ..+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8
+MATERIAL                            2.35       27.                    CONCRETE
+* ..+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8
+MATERIAL                            2.70       28.                    CRUST
+* ..+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8
+MATERIAL                              1.       29.                    WATER
+MATERIAL         32.               5.323                              GERMANIU
+MATERIAL         14.                2.33                              SILICON
+MATERIAL         29.                8.96                              COPPER
+*         ---------|---------|---------|---------|---------|---------|
+MATERIAL                        0.001205                              STDAIR
+COMPOUND   -0.000124    CARBON -0.755267  NITROGEN -0.231781   SILICONSTDAIR
+COMPOUND   -0.012827     ARGON                                        STDAIR
+COMPOUND          2.  GERMANIU        1.   SILICON                    WATER
+COMPOUND       -0.01  GERMANIU    -0.001    CARBON -0.529107   SILICONCONCRETE
+COMPOUND      -0.016  GERMANIU    -0.002  MAGNESIU -0.033872  ALUMINUMCONCRETE
+COMPOUND   -0.337021   SILICON    -0.013  POTASSIU    -0.044   CALCIUMCONCRETE
+COMPOUND      -0.044      IRON                                        CONCRETE
+COMPOUND      -0.461    OXYGEN    -0.282   SILICON   -0.0823  ALUMINUMCRUST
+COMPOUND     -0.0563      IRON   -0.0415   CALCIUM   -0.0236    SODIUMCRUST
+COMPOUND     -0.0233  MAGNESIU   -0.0209  POTASSIU                    CRUST
+COMPOUND                                                              CRUST
+*MATERIAL                            2.65                              CrstRck
+* Keep in mind Phospho-the material I defined has to be defined after CrstRck
+*MATERIAL         15.                1.82                              PHOSPHO
+*MATERIAL         25.                 7.3                              MANGAN
+*MATERIAL          9.              0.0016                              FLOURIN
+* Barium has 5 stable isotopes, A=138 has 71 percent abundance
+*MATERIAL         56.      138.      3.62                              BARIUM
+*MATERIAL         38.                2.64                              STRONT
+*MATERIAL         16.                2.07                              SULFUR
+* Zr-has number of isotopes-A90 has 51 percent abundance
+*MATERIAL         40.                6.52                              ZIRCO
+* Chlorine-35 has 76-percent abundance
+*MATERIAL         17.       35.    0.0029                              CHLORIN
+*MATERIAL         23.                  6.                              VANADIM
+* Cr-52 has 84-percent abundance
+*MATERIAL         24.                7.15                              CHROMIU
+* Rb-85 has 72-percent abundance
+*MATERIAL         37.                1.53                              RUBIDIU
+* Zn-64 has 49-percent abundance
+*MATERIAL         30.               7.134                              ZINC
+*MATERIAL         55.               1.873                              CESIU
+* Nd-142 has 27-percent abundance
+*MATERIAL         60.                7.01                              NEODYNI
+* La-139 has 99-percent abundance
+*MATERIAL         57.                6.15                              LANTHAN
+* Y-89 has 100 -percent abundance
+*MATERIAL         39.                4.47                              YTTRIU
+* Co-59 has 100-percent abundance
+*MATERIAL         27.                8.86                              COBALT
+* Sc-45 has 100-percent abundance
+*MATERIAL         21.                2.99                              SCANDIU
+* Li-7 has 93-percent abundance
+*MATERIAL          3.               0.534                              LITHIU
+* Nb-93 has 100-percent abundance
+*MATERIAL         41.                8.57                              NIOBIU
+* Ga-69 has 60-percent abundance
+*MATERIAL         31.                5.91                              GALLIU
+* B-11 has 80-percent abundance
+*MATERIAL          5.                2.34                              BORO
+* Ar40-test/higher density
+*MATERIAL         18.                 0.1                              ARGO
+* If I stop at BORON, I will have included all elements with abundance greater than 10 ppm.
+* If I stop at BORON, I will have included all elements with abundance greater than 10 ppm
+*COMPOUND   -50.06516   SILICON -30.62554   SILICON  -6.11425      IRONCrstRck
+*COMPOUND    -4.50695   CALCIUM  -2.56299  GERMANIU  -2.53041  MAGNESIUCrstRck
+*COMPOUND    -2.26977  POTASSIU   -0.6136  TITANIUM  -0.15204  GERMANIUCrstRck
+*COMPOUND    -0.11403   PHOSPHO  -0.10317    MANGAN  -0.06353   FLOURINCrstRck
+*COMPOUND    -0.04616    BARIUM  -0.04018    STRONT  -0.03801    SULFURCrstRck
+*COMPOUND    -0.02172    CARBON  -0.02172    CARBON  -0.01792     ZIRCOCrstRck
+*COMPOUND    -0.01575   CHLORIN  -0.01303   VANADIM  -0.01108   CHROMIUCrstRck
+*COMPOUND    -0.00977   RUBIDIU  -0.00912    NICKEL   -0.0076      ZINCCrstRck
+*COMPOUND    -0.00722     CESIU  -0.00652    COPPER -0.000451   NEODYNICrstRck
+*COMPOUND    -0.00424   LANTHAN  -0.00358    YTTRIU  -0.00272    COBALTCrstRck
+*COMPOUND    -0.00239   SCANDIU  -0.00217    LITHIU  -0.00217    NIOBIUCrstRck
+*COMPOUND    -0.00206    GALLIU  -0.00206  NITROGEN  -0.00152      LEADCrstRck
+*COMPOUND    -0.00109      BORO                                        CrstRck
+*COMPOUND                                                              CrstRck
+*COMPOUND   -50.06516   SILICON -30.62554   SILICON  -6.11425      IRONCrstRck
+*COMPOUND    -4.50695   CALCIUM  -2.56299  GERMANIU  -2.53041  MAGNESIUCrstRck
+*COMPOUND    -2.26977  POTASSIU   -0.6136  TITANIUM  -0.15204  GERMANIUCrstRck
+*COMPOUND    -0.11403   PHOSPHO  -0.10317    MANGAN  -0.06353   FLOURINCrstRck
+*COMPOUND    -0.04616    BARIUM  -0.04018    STRONT  -0.03801    SULFURCrstRck
+*COMPOUND    -0.02172    CARBON  -0.02172    CARBON  -0.01792     ZIRCOCrstRck
+*COMPOUND    -0.01575   CHLORIN  -0.01303   VANADIM  -0.01108   CHROMIUCrstRck
+*COMPOUND    -0.00977   RUBIDIU  -0.00912    NICKEL   -0.0076      ZINCCrstRck
+*COMPOUND    -0.00722     CESIU  -0.00652    COPPER -0.000451   NEODYNICrstRck
+*COMPOUND    -0.00424   LANTHAN  -0.00358    YTTRIU  -0.00272    COBALTCrstRck
+*COMPOUND    -0.00239   SCANDIU  -0.00217    LITHIU  -0.00217    NIOBIUCrstRck
+*COMPOUND    -0.00206    GALLIU  -0.00206  NITROGEN  -0.00152      LEADCrstRck
+*COMPOUND    -0.00109      BORO                                        CrstRck
+*COMPOUND                                                              CrstRck
+*  Oxygen-implementation-gives-error-but-low-neutron-cross-section-activated-with-following-identifier 8, -2, 296
+*LOW-MAT      SILICON        8.       16.      296.                    SILICON
+*  low-mat assignment for all the elements involved
+*LOW-MAT      SILICON       14.       -2.      296.                    SILICON
+*LOW-MAT         IRON       26.       -2.      296.                    IRON
+*LOW-MAT      CALCIUM       20.       -2.      296.                    CALCIUM
+*
+LOW-MAT     GERMANIU       32.       -2.      296.                    GERMANIU
+*
+LOW-MAT      SILICON       14.       -2.      296.                    SILICON
+*
+LOW-MAT       COPPER       29.       -2.      296.                    COPPER
+*
+*LOW-MAT     POTASSIU       19.       -2.      296.                    POTASSIU
+*
+*LOW-MAT     TITANIUM       22.       -2.      296.                    TITANIUM
+*
+*LOW-MAT     GERMANIU        1.       -5.      296.                    GERMANIU
+*
+*LOW-MAT      PHOSPHO       15.       31.      296.                    PHOSPHO
+*
+*LOW-MAT       MANGAN       25.       55.      296.                    MANGANES
+*
+*LOW-MAT      FLOURIN        9.       19.      296.                    FLUORINE
+*
+*LOW-MAT       BARIUM       56.       -2.      296.                    BARIUM
+*
+*LOW-MAT       STRONT       38.       90.      296.                    90-SR
+*
+*LOW-MAT       SULFUR       16.       -2.      296.                    SULFUR
+*
+*LOW-MAT       CARBON        6.       -2.      296.                    CARBON
+*
+*LOW-MAT        ZIRCO       40.       -2.      296.                    ZIRCONIU
+*
+*LOW-MAT      CHLORIN       17.       -2.      296.                    CHLORINE
+*
+*LOW-MAT      VANADIM       23.       -2.      296.                    VANADIUM
+*
+*LOW-MAT      CHROMIU       24.       -2.      296.                    CHROMIUM
+*  Rubidium-not-found in low-n-cross-section-library, mean sigma is similar to that of Yi
+*LOW-MAT      RUBIDIU       39.       89.      296.                    YTTRIUM
+*
+*LOW-MAT       NICKEL       28.       -2.      296.                    NICKEL
+*
+*LOW-MAT         ZINC       30.       -2.      296.                    ZINC
+*
+*LOW-MAT        CESIU       55.      133.      296.                    CESIUM
+*
+*LOW-MAT       COPPER       29.       -2.      296.                    COPPER
+*
+*LOW-MAT      NEODYNI       60.       -2.      296.                    NEODYMIU
+*
+*LOW-MAT      LANTHAN       11.       23.      296.                    GERMANIU
+*
+*LOW-MAT       YTTRIU       39.       89.      296.                    YTTRIUM
+*
+*LOW-MAT       COBALT       27.       59.      296.                    COBALT
+*
+*LOW-MAT      SCANDIU       21.       45.      296.                    SCANDIUM
+*
+*LOW-MAT       LITHIU        3.        7.      296.                    LITHIU-7
+*
+*LOW-MAT       NIOBIU       41.       93.      296.                    NIOBIUM
+*
+*LOW-MAT       GALLIU       31.       -2.      296.                    GALLIUM
+*
+*LOW-MAT     NITROGEN        7.       14.      296.                    NITRO-14
+*
+*LOW-MAT         LEAD       82.       -2.      296.                    LEAD
+*
+*LOW-MAT         BORO        5.       -2.      296.                    BORON
+*
+*LOW-MAT         ARGO       18.       -4.      296.                    ARGON
+*  External Black Hole
+ASSIGNMA    BLCKHOLE  blackhol  blackhol
+ASSIGNMA         AIR    VACCUM    VACCUM
+ASSIGNMA    BLCKHOLE   Rock_Ov   Rock_Ov
+ASSIGNMA       CRUST   Rock_to   Rock_to
+ASSIGNMA         AIR    Tunair    Tunair
+ASSIGNMA     SILICON     Gedet     Gedet
+*ASSIGNMA    GERMANIU    Gedet2    Gedet2
+*ASSIGNMA    BLCKHOLE     Cudet     Cudet
+*ASSIGNMA       CRUST    Rock_8    Rock_8
+*ASSIGNMA       CRUST    Rock_9    Rock_9
+*ASSIGNMA       CRUST   Rock_10   Rock_10
+*ASSIGNMA       CRUST   Rock_11   Rock_11
+* ..+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8
+*  concrete
+*ASSIGNMA    CONCRETE   Rock_Ov   Rock_Ov
+*ASSIGNMA    CONCRETE    Rock_7    Rock_7
+*ASSIGNMA         AIR     Room2     Room2
+*ASSIGNMA         AIR     Room3     Room3
+*ASSIGNMA    CONCRETE     Wall3     Wall3
+*ASSIGNMA    CONCRETE      Rock      Rock
+*DELTARAY       0.001       50.      1.15    VACUUM     WATER        1.PRINT
+* ..+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8
+* e+e- and gamma production threshold set at 2
+* EMFCUT-to-raise-transport-threshold-for-electrons-positrons-photons
+*EMFCUT          -0.1        1.        1.    VACCUM  @LASTREG
+* electron-positron-and-photon-are-dumped-on-spot-if-emf-is-off
+EMF
+* Used-to-discard-particles
+*DISCARD     4-HELIUM    PHOTON  DEUTERON  HEAVYION   NEUTRON     E+&E-
+* For numcleon, hadrons use PART-THR
+PART-THR      -1E-08    TRITON    TRITON                 0.0
+PART-THR      -1E-08  DEUTERON  DEUTERON                 0.0
+PART-THR      -1E-08  4-HELIUM  4-HELIUM                 0.0
+PART-THR      -1E-07     MUON-     MUON-                 0.0
+PART-THR      -1E-07     MUON+     MUON+                 0.0
+PART-THR      -1000.   NEUTRON   NEUTRON                 0.0
+PART-THR      -1E-07    PROTON    PROTON                 0.0
+*TIME-CUT    5000000.
+* Boundary crossing fluence in the middle of the target (log intervals, one-way)
+*USRBDX           99.     MUONS      -47.  blackhol   Rock_bo  1000000.muFluenUD
+*USRBDX                               50.                 0.0       10. &
+*RESNUCLE          3.      -99.        3.               Gedet  4000000.Resrck1
+RESNUCLE          3.      -99.                         Gedet    33510.Geres
+*USRBIN           10.     MUON-      -70.     1000.     1000.       0.0Um
+*USRBIN        -1000.    -1000.    -2000.       10.       10.       10. &
+*USRBIN           10.     MUON-      -71.      200.      200.      120.nm
+*USRBIN         -200.     -200.       0.0       10.       10.       10. &
+*USRBIN           10.    TRITON      -71.      200.      200.      120.nm1
+*USRBIN         -200.     -200.       0.0       10.       10.       10. &
+*USRBIN           10.   NEUTRON      -72.     1000.     1000.       0.0Un1
+*USRBIN        -1000.    -1000.    -2000.       10.       10.       10. &
+*EVENTBIN         12.                -81.     Gedet
+*EVENTBIN       Gedet                                                   &
+*USRBIN           10.  4-HELIUM      -72.     1000.     1000.      200.Uhe4
+*USRBIN        -1000.    -1000.     -900.        5.        5.       28. &
+*USRBIN           10.  DEUTERON      -74.     1000.     1000.      200.UT
+*USRBIN        -1000.    -1000.     -900.        5.        5.       28. &
+*USRBIN           10.    PROTON      -75.     1000.     1000.      200.UP
+*USRBIN        -1000.    -1000.     -900.        5.        5.       28. &
+* Tracklength fluence inside the target, Upstream part and Downstream part
+* Logarithmic energy intervals
+*USRTRACK         -1.    TRITON      -54.     Gedet     4189.       15.tfl1
+*USRTRACK         0.1   0.00001                                         &
+* Tracklength fluence inside the target, Upstream part and Downstream part
+* Logarithmic energy intervals
+*USRTRACK          1.     MUON-      -55.     Gedet    49100.       10.mfl1
+*USRTRACK      0.0001      1E-9                                         &
+* Tracklength fluence inside the target, Upstream part and Downstream part
+* Logarithmic energy intervals
+*USRTRACK         -1.   NEUTRON      -55.    Tunair    1.35E8       12.nfl
+*USRTRACK          1.     0.015                                         &
+*USRYIELD         99.    TRITON      -77.     Gedet     Gedet          ty
+*USRYIELD         0.1     1E-12       10.                               &
+* Tracklength fluence inside the target, Upstream part and Downstream part
+* Logarithmic energy intervals
+*USRTRACK         -1.  4-HELIUM      -56.   Rock_to400000000.      100.hefl
+*USRTRACK          2.   0.00001                                         &
+* Tracklength fluence inside the target, Upstream part and Downstream part
+* Logarithmic energy intervals
+*USRTRACK         -1.  3-HELIUM      -57.   Rock_to400000000.      100.thefl
+*USRTRACK          2.   0.00001                                         &
+* Tracklength fluence inside the target, Upstream part and Downstream part
+* Logarithmic energy intervals
+*USRTRACK         -1.    PROTON      -58.   Rock_to400000000.      100.pfl
+*USRTRACK         10.    0.0001                                         &
+* Tracklength fluence inside the target, Upstream part and Downstream part
+* Logarithmic energy intervals
+*USRTRACK         -1.    TRITON      -59.   Rock_to400000000.      100.tfl
+*USRTRACK         10.    0.0001                                         &
+* Tracklength fluence inside the target, Upstream part and Downstream part
+* Logarithmic energy intervals
+*USRTRACK         -1.  DEUTERON      -60.   Rock_to400000000.      100.dfl
+*USRTRACK         10.    0.0001                                         &
+* Tracklength fluence inside the target, Upstream part and Downstream part
+* Logarithmic energy intervals
+*USRTRACK         -1.     MUON-      -55.   Rock_108000000000      100.muonFluenU
+*USRTRACK       1000.    0.0001                                         &
+*USRTRACK         -1.     MUONS      -49.   Rock_bo100000000.       20.muonFluenD
+*USRTRACK       1000.    0.0001                                         &
+*RESNUCLE          3.      -84.       90.             Rock_Ov     2.5E8Rock_body1
+*RESNUCLE          3.      -85.       90.             Rock_to     2.5E8Rock_body2
+*RESNUCLE          3.      -86.       90.             Rock_bo     2.5E8Rock_body3
+* Cartesian binning of the muon fluence inside and around the target
+*USRBIN           10.    ENERGY      -50.      300.      300.     1000.enedep
+*USRBIN         -300.     -300.    -2000.       30.       30.      150. &
+* Cartesian binning of the fluxes inside the target
+*USRBIN           10.   NEUTRON      -52.      500.      500.       0.0neutfl
+*USRBIN         -500.     -500.    -3000.       40.       40.      100. &
+* Cartesian binning of the fluxes inside the target
+*USRBIN           10.  4-HELIUM      -53.      500.      500.       0.0alphafl
+*USRBIN         -500.     -500.    -3000.       40.       40.      100. &
+*USRTRACK         -1.     MUON-      -60.    Gedet2    1.35E8       20.nmflu
+*USRTRACK    1000000.        1.                                         &
+*USRTRACK         -1.     MUON-      -62.    Tunair     4.8E8       30.ncmflu
+*USRTRACK     100000.    0.0001                                         &
+*USRTRACK         -1.     MUON+      -63.    Tunair     4.8E8       30.mcmflu
+*USRTRACK     100000.    0.0001                                         &
+*USRTRACK         -1.     MUON+      -61.    Gedet21600000000       30.mmflu
+*USRTRACK     100000.    0.0001                                         &
+*USRTRACK         -1.   NEUTRON      -62.    Gedet21600000000       30.nntfflu
+*USRTRACK          1.   0.00001                                         &
+*USRTRACK         -1.    PHOTON      -62.    Gedet21600000000       30.ngflu
+*USRTRACK          1.    0.0001                                         &
+*USRTRACK         -1.   NEUTRON      -62.   Rock_bo1000000000       40.NfluR3
+*USRTRACK         10.  0.000001                                         &
+*USRTRACK          1.   NEUTRON      -60.   Rock_Ov1000000000       10.NfluR1
+*USRTRACK         10.  0.000001                                         &
+*USRTRACK          1.  4-HELIUM      -61.   Rock_Ov1000000000       10.AfluR1
+*USRTRACK         10.  0.000001                                         &
+*USRTRACK          1.     MUON-      -62.   Rock_Ov1000000000       10.MfluR1
+*USRTRACK         20.        5.                                         &
+* Cartesian binning of the deposited energy inside the target
+*USRBIN           10.  BEAMPART       52.        5.        5.     1500.beamdes
+*USRBIN           -5.       -5.     -700.        1.        1.      440. &
+* Cartesian binning of the muon fluence inside and around the target
+*USRBIN           10.      DOSE      -52.        5.        5.     1505.dose
+*USRBIN           -5.       -5.     -700.        1.        1.      441. &
+* Cartesian binning of the muon fluence inside and around the target
+*USRBIN           10.   DOSE-EQ      -53.        5.        5.     1505.doseeq
+*USRBIN           -5.       -5.     -700.        1.        1.      441. &
+* ..+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8
+RANDOMIZ          1. 20220404.
+* ..+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8
+START       5000000.
+STOP
